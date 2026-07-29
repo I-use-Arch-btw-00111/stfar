@@ -4,6 +4,8 @@
 
 ### Build Dependencies
 
+#### Caution: These instructions assume you have Rust toolchain installed
+
 #### Gentoo
 
 - `llvm-core/clang`
@@ -55,9 +57,18 @@
 - `libxkbcommon-devel`
 - `wild-linker`
 
-#### Other Distros
+#### Other Linux Distros
 
 Refer to [Bevy Linux dependencies](https://github.com/bevyengine/bevy/blob/latest/docs/linux_dependencies.md). Install `clang` from you distro's official repos. Install `just` and `wild-linker` with cargo.
+
+
+#### DragonFlyBSD
+
+Currently DragonFlyBSD is not supported because its Rust toolchain is far too much out of date (rustc 1.85.1 as of 2026-07-29). Although a DragonFlyBSD port is among the goals, it doesn't have a high priority.
+
+#### Other BSDs
+
+Not tested, but information will be welcome.
 
 #### MacOS
 Install Xcode command line tools with `xcode-select --install`.
