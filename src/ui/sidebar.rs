@@ -158,12 +158,9 @@ pub(super) fn update_overall_timer(mut query: Query<(&mut Text, &TotalTime)>) {
         let seconds = total_secs % 60;
         let content = format!("Total Time: {:02}:{:02}", minutes, seconds);
 
-        // `Text` in bevy_ui is a tuple struct wrapper around bevy_text::Text; access inner Text via `.0`
-        let inner = &mut ui_text.0;
-        if let Some(section) = inner.sections.get_mut(0) {
-            section.value = content.clone();
-        } else {
-            inner.sections = vec![bevy::text::TextSection::new(content, Default::default())];
-        }
+        // In this repo's Bevy version Text used by UI is the tuple struct wrapper
+        // whose inner string is `.0` — update it directly.
+        ui_text.0.clear();
+        ui_text.0.push_str(&content);
     }
 }
