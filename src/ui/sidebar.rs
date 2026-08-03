@@ -1,6 +1,10 @@
 
 use bevy::{prelude::*, ecs::relationship::RelatedSpawnerCommands};
 use crate::assets::{FontAssets, IconAssets};
+use crate::utils::timer::Timer;
+
+#[derive(Component)]
+pub(super) struct TotalTime(pub Timer);
 
 pub(super) fn render(
     cmds: &mut Commands,
@@ -72,7 +76,11 @@ fn render_overall_timer(
     font: TextFont,
     color: TextColor
 ) {
-    parent.spawn((Text::new("Total Time: 00:00"), font, color));
+    // Create and start the total time counter
+    let mut timer = Timer::new();
+    timer.start();
+
+    parent.spawn((Text::new("Total Time: 00:00"), font, color, TotalTime(timer)));
 }
 
 fn render_health_row(
@@ -143,3 +151,17 @@ fn render_icons(container: &mut RelatedSpawnerCommands<ChildOf>, icon: &Handle<I
     }
 }
 
+pub(super) fn update_overall_timer(mut query: Query<(&mut Text, &TotalTime)>) {
+    for (mut text, total) in query.iter_mut() {
+        let secs = total.0.total_seconds();
+        let total_secs = secs.floor() as u64;
+        let minutes = total_secs / 60;
+        let seconds = total_secs % 60;
+        if let Some(section) = text.sections.get_mut(0) {
+            section.value = format!("Total Time: {:02}:{:02}", minutes, seconds);
+        } else {
+            // Fallback: replace whole text
+            text.sections = vec![TextSection::new(format!("Total Time: {:02}:{:02}", minutes, seconds), Default::default())];
+        }
+    }
+}
