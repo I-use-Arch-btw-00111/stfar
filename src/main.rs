@@ -1,6 +1,7 @@
 
 mod assets;
 mod ui;
+mod utils;
 
 use bevy::{
     log::LogPlugin, prelude::*, window::{PresentMode, WindowResolution, WindowTheme}
@@ -40,4 +41,3 @@ fn main() {
         .add_plugins(ui::Render)
         .run();
 }
-

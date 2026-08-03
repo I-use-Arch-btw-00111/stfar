@@ -33,4 +33,4 @@ redundant_clone      = "warn"
 
 [dependencies]
 bevy = { version = "0.19.0", features = ["2d", "ui", "audio"] }
-
+minstant = "0.6"
