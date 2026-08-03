@@ -1,7 +1,5 @@
-
 mod sidebar;
 mod game_screen;
-mod utils;
 
 use bevy::prelude::*;
 

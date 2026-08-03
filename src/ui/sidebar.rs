@@ -1,4 +1,3 @@
-
 use bevy::{prelude::*, ecs::relationship::RelatedSpawnerCommands};
 use crate::assets::{FontAssets, IconAssets};
 use crate::utils::timer::Timer;
@@ -152,16 +151,19 @@ fn render_icons(container: &mut RelatedSpawnerCommands<ChildOf>, icon: &Handle<I
 }
 
 pub(super) fn update_overall_timer(mut query: Query<(&mut Text, &TotalTime)>) {
-    for (mut text, total) in query.iter_mut() {
+    for (mut ui_text, total) in query.iter_mut() {
         let secs = total.0.total_seconds();
         let total_secs = secs.floor() as u64;
         let minutes = total_secs / 60;
         let seconds = total_secs % 60;
-        if let Some(section) = text.sections.get_mut(0) {
-            section.value = format!("Total Time: {:02}:{:02}", minutes, seconds);
+        let content = format!("Total Time: {:02}:{:02}", minutes, seconds);
+
+        // `Text` in bevy_ui is a tuple struct wrapper around bevy_text::Text; access inner Text via `.0`
+        let inner = &mut ui_text.0;
+        if let Some(section) = inner.sections.get_mut(0) {
+            section.value = content.clone();
         } else {
-            // Fallback: replace whole text
-            text.sections = vec![TextSection::new(format!("Total Time: {:02}:{:02}", minutes, seconds), Default::default())];
+            inner.sections = vec![bevy::text::TextSection::new(content, Default::default())];
         }
     }
 }
